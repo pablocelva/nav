@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.nav.R
 import com.example.nav.databinding.FragmentRegisterBinding
 
 
@@ -23,6 +25,12 @@ class RegisterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        binding.backToLoginButton.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
+//        binding.loginButton.setOnClickListener {
+//            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+//        }
         return binding.root
 
     }
