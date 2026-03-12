@@ -15,25 +15,27 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        
         binding.backToLoginButton.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
-//        binding.loginButton.setOnClickListener {
-//            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-//        }
-        return binding.root
 
+        binding.createAccountButton.setOnClickListener {
+            // Aquí iría tu lógica de registro (validaciones, API, etc.)
+            // Por ahora, navegamos directamente a la pantalla de éxito
+            findNavController().navigate(R.id.action_registerFragment_to_successFragment)
+        }
+        
+        return binding.root
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
