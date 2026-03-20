@@ -33,9 +33,9 @@ class LoginFragment : Fragment() {
         binding.registerButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-       // binding.loginButton.setOnClickListener {
-       //     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-       //}
+       binding.loginButton.setOnClickListener {
+           findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+       }
         return binding.root
     }
 
@@ -58,8 +58,7 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             viewModel.login(
                 onSuccess = {
-                    //Navegar a Home
-                    //findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 },
                 onError = { message ->
                     binding.passwordTextInputLayout.error = message

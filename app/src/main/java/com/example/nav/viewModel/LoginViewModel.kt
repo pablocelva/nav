@@ -54,7 +54,7 @@ class LoginViewModel (
             isFormValid = formValid
         )
 
-        if (formValid) return
+        if (!formValid) return
 
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)

@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     private fun handleDestinationChange(destinationId: Int) {
         val destinationConfig = mapOf(
             R.id.loginFragment to Pair("Iniciar Sesión", false),
-            R.id.homeFragment to Pair("Home", false),
+            R.id.homeFragment to Pair("Home", true),
             R.id.registerFragment to Pair("Registro", true)
         )
         val config = destinationConfig[destinationId]
