@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
     private fun handleDestinationChange(destinationId: Int) {
         val destinationConfig = mapOf(
             R.id.loginFragment to Pair("Iniciar Sesión", false),
-            R.id.homeFragment to Pair("Home", true),
+            R.id.homeFragment to Pair("Home", false),
             R.id.registerFragment to Pair("Registro", true)
         )
         val config = destinationConfig[destinationId]
@@ -70,6 +70,12 @@ class MainActivity : AppCompatActivity() {
                 //implementar toast toast
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
 
+                true
+            }
+            R.id.actions_logout->{
+                //todo actions button
+                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.loginFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
