@@ -4,12 +4,17 @@ Este es un proyecto de Android diseñado para demostrar la implementación de un
 
 ## 📱 Capturas de Pantalla
 
-<p align="center">
-  <img src="screenshots/login.png" width="200" title="Login">
-  <img src="screenshots/register.png" width="200" title="Registro">
-  <img src="screenshots/success.png" width="200" title="Éxito">
-  <img src="screenshots/home.png" width="200" title="Home">
-</p>
+### Login
+<a href="./Screenshots/Login.png"><img src="./Screenshots/Login.png" width="180"></a>
+<a href="./Screenshots/LoginValidation.png"><img src="./Screenshots/LoginValidation.png" width="180"></a>
+<a href="./Screenshots/LoginComplete.png"><img src="./Screenshots/LoginComplete.png" width="180"></a>
+
+### Register
+<a href="./Screenshots/Register.png"><img src="./Screenshots/Register.png" width="180"></a>
+<a href="./Screenshots/RegisterValidation.png"><img src="./Screenshots/RegisterValidation.png" width="180"></a>
+<a href="./Screenshots/RegisterComplete.png"><img src="./Screenshots/RegisterComplete.png" width="180"></a>
+<a href="./Screenshots/Succes.png"><img src="./Screenshots/Succes.png" width="180"></a>
+
 
 ## 🚀 Características
 
