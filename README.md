@@ -1,18 +1,29 @@
 # Android Navigation App (nav)
 
-Este es un proyecto de Android diseñado para demostrar la implementación de un flujo de navegación moderno utilizando las mejores prácticas de desarrollo, incluyendo **Material Design 3**, **View Binding** y **Navigation Component**.
+Este es un proyecto de Android diseñado para demostrar la implementación de un flujo de navegación moderno utilizando las mejores prácticas de desarrollo, incluyendo **MVVM Architecture**, **Material Design 3**, **View Binding** y **Navigation Component**.
+
+## 📱 Capturas de Pantalla
+
+<p align="center">
+  <img src="screenshots/login.png" width="200" title="Login">
+  <img src="screenshots/register.png" width="200" title="Registro">
+  <img src="screenshots/success.png" width="200" title="Éxito">
+  <img src="screenshots/home.png" width="200" title="Home">
+</p>
 
 ## 🚀 Características
 
+- **Arquitectura MVVM**: Separación clara entre la lógica de negocio (`ViewModel`), el estado de la UI (`Model/UIState`) y la vista (`Fragment`).
+- **Validación en Tiempo Real**: Formularios de Login y Registro con validaciones dinámicas que habilitan/deshabilitan el botón de acción y muestran errores en los campos.
 - **Single Activity Architecture**: Utiliza una única actividad principal (`MainActivity`) que gestiona el flujo de fragmentos.
 - **Navigation Component**: Implementación robusta de navegación mediante `NavHostFragment` y `nav_graph`.
-- **Material Design 3**: Interfaz de usuario moderna y adaptable siguiendo las guías de diseño de Google.
+- **Material Design 3**: Interfaz de usuario moderna y adaptable con componentes avanzados de Material.
 - **View Binding**: Acceso seguro a las vistas eliminando el riesgo de errores `NullPointerException` y `findViewById`.
-- **Formularios de Login y Registro**: Pantallas prediseñadas con validaciones visuales y UX optimizada.
 
 ## 🛠️ Tecnologías y Librerías
 
 - **Kotlin**: Lenguaje principal de desarrollo.
+- **Coroutines & Flow**: Para el manejo de estados asíncronos y reactivos de la UI.
 - **Navigation Component**: Para la gestión de rutas y transiciones entre pantallas.
 - **Material Components**: Para elementos de UI avanzados y temas.
 - **ConstraintLayout**: Para diseños flexibles y eficientes.
@@ -52,7 +63,9 @@ Sigue estos pasos para levantar el proyecto localmente:
 ```text
 app/src/main/
 ├── java/com/example/nav/
-│   ├── view/               # Fragmentos (Login, Register, etc.)
+│   ├── model/              # Estados de UI (UIState) y validadores
+│   ├── viewModel/          # Lógica de negocio y gestión de estado
+│   ├── view/               # Fragmentos (Login, Register, Home, etc.)
 │   └── MainActivity.kt     # Actividad principal (Host de navegación)
 ├── res/
 │   ├── layout/             # Diseños XML con View Binding

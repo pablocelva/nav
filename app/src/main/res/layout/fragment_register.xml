@@ -43,7 +43,7 @@
                 android:textSize="18sp"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:alpha="0.75"
-                android:layout_marginBottom="24dp" />
+                android:layout_marginBottom="16dp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/registerCard"
@@ -152,7 +152,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Acepto los términos y condiciones"
-                        android:layout_marginBottom="20dp" />
+                        android:layout_marginBottom="8dp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/createAccountButton"
@@ -168,11 +168,14 @@
                         android:id="@+id/backToLoginButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:text="Ya tengo cuenta"
                         app:icon="@drawable/login_24"
+                        app:iconGravity="textStart"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:layout_marginTop="8dp"
                         android:backgroundTint="@color/design_default_color_secondary_variant"
-                        app:iconGravity="textStart" />
+                        />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
