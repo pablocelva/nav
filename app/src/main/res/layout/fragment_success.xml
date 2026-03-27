@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="Ir al Login"
+                android:text="Iniciar Sesión"
                 app:icon="@drawable/login_24"
                 app:iconGravity="textStart"
                 android:paddingTop="12dp"

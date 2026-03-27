@@ -4,13 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nav.model.RegisterUIState
 import com.example.nav.model.RegisterValidator
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class RegisterViewModel(
-    private val validator: RegisterValidator = RegisterValidator()
+    private val validator: RegisterValidator = RegisterValidator(),
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUIState())
@@ -80,16 +84,25 @@ class RegisterViewModel(
         validateForm()
         if (!_uiState.value.isFormValid) return
 
+        val state = _uiState.value
+
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isLoading = true)
             try {
-                // Simulación de registro
-                kotlinx.coroutines.delay(1000)
+                // Registro real con Firebase Auth
+                val result = auth.createUserWithEmailAndPassword(state.email, state.password).await()
+                
+                // Actualizar el perfil del usuario con el nombre completo
+                val profileUpdates = userProfileChangeRequest {
+                    displayName = state.fullName
+                }
+                result.user?.updateProfile(profileUpdates)?.await()
+
                 _uiState.value = _uiState.value.copy(isLoading = false)
                 onSuccess()
             } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(isLoading = false)
-                onError(e.message ?: "Error desconocido")
+                onError(e.localizedMessage ?: "Error al crear la cuenta")
             }
         }
     }

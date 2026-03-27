@@ -4,13 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nav.model.LoginValidator
 import com.example.nav.model.LoginUIState
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class LoginViewModel (
-    private val loginValidator: LoginValidator = LoginValidator()
+    private val loginValidator: LoginValidator = LoginValidator(),
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUIState())
@@ -60,15 +63,20 @@ class LoginViewModel (
             _uiState.value = _uiState.value.copy(isLoading = true)
 
             try {
-                // Llamada use case real
-                //authUseCase.login(currentState.username,trim(), currentState.password)
-
+                // Autenticación real con Firebase usando el campo "username" como email
+                auth.signInWithEmailAndPassword(currentState.username, currentState.password).await()
+                
                 _uiState.value = _uiState.value.copy(isLoading = false)
                 onSuccess()
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 _uiState.value = _uiState.value.copy(isLoading = false)
-                onError("Credenciales inválidas")
+                onError("Error de autenticación. Datos incorrectos")
+                //onError(e.localizedMessage ?: "Error de autenticación")
             }
         }
+    }
+    
+    fun isUserLoggedIn(): Boolean {
+        return auth.currentUser != null
     }
 }

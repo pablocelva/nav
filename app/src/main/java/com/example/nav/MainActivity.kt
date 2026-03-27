@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.nav.databinding.MainActivityBinding
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainActivityBinding
@@ -17,10 +18,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        
         setSupportActionBar(binding.toolbar)
         setupNavHost()
         setupDestinationChangedListener()
-        setContentView(binding.root)
     }
 
     //Configuracion NavHost
@@ -57,29 +59,33 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.toolbar, menu)
-        //todo add funtions search
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.actions_search->{
-                //todo actions button
                 true
             }
             R.id.actions_settings->{
-                //implementar toast toast
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
-
                 true
             }
             R.id.actions_logout->{
-                //todo actions button
-                Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
-                navController.navigate(R.id.loginFragment)
+                logout()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun logout() {
+        // 1. Cerrar sesión en Firebase
+        FirebaseAuth.getInstance().signOut()
+        
+        // 2. Navegar al Login y limpiar el stack
+        navController.navigate(R.id.action_homeFragment_to_loginFragment)
+        
+        Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show()
     }
 }
