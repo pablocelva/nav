@@ -4,18 +4,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nav.model.RegisterUIState
 import com.example.nav.validation.RegisterValidator
+import com.example.nav.data.FirebaseAuthRepository
+import com.example.nav.domain.auth.RegisterUseCase
+import com.example.nav.domain.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
-class RegisterViewModel(
-    private val validator: RegisterValidator = RegisterValidator(),
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-) : ViewModel() {
+class RegisterViewModel : ViewModel() {
+    private val validator = RegisterValidator()
+    private val repository = FirebaseAuthRepository(FirebaseAuth.getInstance())
+    private val registerUseCase = RegisterUseCase(repository)
 
     private val _uiState = MutableStateFlow(RegisterUIState())
     val uiState: StateFlow<RegisterUIState> = _uiState.asStateFlow()
@@ -80,30 +81,40 @@ class RegisterViewModel(
         _uiState.value = _uiState.value.copy(isFormValid = isValid)
     }
 
-    fun register(onSuccess: () -> Unit, onError: (String) -> Unit) {
+    fun register() {
         validateForm()
         if (!_uiState.value.isFormValid) return
 
         val state = _uiState.value
 
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isLoading = true)
-            try {
-                // Registro real con Firebase Auth
-                val result = auth.createUserWithEmailAndPassword(state.email, state.password).await()
-                
-                // Actualizar el perfil del usuario con el nombre completo
-                val profileUpdates = userProfileChangeRequest {
-                    displayName = state.fullName
+            _uiState.value = _uiState.value.copy(
+                isLoading = true,
+                registerErrorMessage = null
+            )
+            val result = registerUseCase(state.email, state.password, state.fullName)
+            when (result) {
+                is AuthResult.Success -> {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        isRegisterSuccess = true
+                    )
                 }
-                result.user?.updateProfile(profileUpdates)?.await()
-
-                _uiState.value = _uiState.value.copy(isLoading = false)
-                onSuccess()
-            } catch (e: Exception) {
-                _uiState.value = _uiState.value.copy(isLoading = false)
-                onError(e.localizedMessage ?: "Error al crear la cuenta")
+                is AuthResult.Error -> {
+                    _uiState.value = _uiState.value.copy(
+                        isLoading = false,
+                        registerErrorMessage = result.message
+                    )
+                }
             }
         }
+    }
+
+    fun clearRegisterSuccess() {
+        _uiState.value = _uiState.value.copy(isRegisterSuccess = false)
+    }
+
+    fun clearRegisterError() {
+        _uiState.value = _uiState.value.copy(registerErrorMessage = null)
     }
 }

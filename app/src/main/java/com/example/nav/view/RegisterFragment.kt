@@ -50,14 +50,7 @@ class RegisterFragment : Fragment() {
             termsCheckBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onTermsChanged(isChecked) }
 
             createAccountButton.setOnClickListener {
-                viewModel.register(
-                    onSuccess = {
-                        findNavController().navigate(R.id.action_registerFragment_to_successFragment)
-                    },
-                    onError = { error ->
-                        Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
-                    }
-                )
+                viewModel.register()
             }
 
             backToLoginButton.setOnClickListener {
@@ -71,6 +64,11 @@ class RegisterFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
                     updateUI(state)
+
+                    if (state.isRegisterSuccess) {
+                        findNavController().navigate(R.id.action_registerFragment_to_successFragment)
+                        viewModel.clearRegisterSuccess()
+                    }
                 }
             }
         }
@@ -84,10 +82,14 @@ class RegisterFragment : Fragment() {
             passwordTextInputLayout.error = state.passwordError
             confirmPasswordTextInputLayout.error = state.confirmPasswordError
             
-            // Habilitar botón solo si el formulario es válido y no está cargando
             createAccountButton.isEnabled = state.isFormValid && !state.isLoading
-            
-            // Opcional: mostrar un progress bar si state.isLoading es true
+            binding.createAccountButton.text =
+                if (state.isLoading) "Creando cuenta..." else "Crear Cuenta"
+
+            state.registerErrorMessage?.let { message ->
+                Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                viewModel.clearRegisterError()
+            }
         }
     }
 

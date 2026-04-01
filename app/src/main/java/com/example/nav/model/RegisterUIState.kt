@@ -16,5 +16,8 @@ data class RegisterUIState(
     val termsError: String? = null,
     
     val isFormValid: Boolean = false,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+
+    val isRegisterSuccess: Boolean = false,
+    val registerErrorMessage: String? = null
 )
