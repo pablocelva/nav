@@ -19,6 +19,7 @@ Este es un proyecto de Android diseñado para demostrar la implementación de un
 ## 🚀 Características
 
 - **Arquitectura MVVM**: Separación clara entre la lógica de negocio (`ViewModel`), el estado de la UI (`Model/UIState`) y la vista (`Fragment`).
+- **Autenticación con Firebase**: Implementación completa de registro e inicio de sesión utilizando **Firebase Auth**, garantizando una gestión de usuarios segura y escalable.
 - **Validación en Tiempo Real**: Formularios de Login y Registro con validaciones dinámicas que habilitan/deshabilitan el botón de acción y muestran errores en los campos.
 - **Single Activity Architecture**: Utiliza una única actividad principal (`MainActivity`) que gestiona el flujo de fragmentos.
 - **Navigation Component**: Implementación robusta de navegación mediante `NavHostFragment` y `nav_graph`.
@@ -28,6 +29,7 @@ Este es un proyecto de Android diseñado para demostrar la implementación de un
 ## 🛠️ Tecnologías y Librerías
 
 - **Kotlin**: Lenguaje principal de desarrollo.
+- **Firebase Auth**: Para la gestión de autenticación de usuarios.
 - **Coroutines & Flow**: Para el manejo de estados asíncronos y reactivos de la UI.
 - **Navigation Component**: Para la gestión de rutas y transiciones entre pantallas.
 - **Material Components**: Para elementos de UI avanzados y temas.
@@ -68,9 +70,12 @@ Sigue estos pasos para levantar el proyecto localmente:
 ```text
 app/src/main/
 ├── java/com/example/nav/
-│   ├── model/              # Estados de UI (UIState) y validadores
-│   ├── viewModel/          # Lógica de negocio y gestión de estado
-│   ├── view/               # Fragmentos (Login, Register, Home, etc.)
+│   ├── data/               # Implementación de repositorios (Firebase Auth)
+│   ├── domain/             # Lógica de negocio pura (UseCases, Interfaces de Repositorio)
+│   ├── model/              # Modelos de datos y estados de UI (UIState)
+│   ├── validation/         # Lógica de validación de formularios
+│   ├── viewModel/          # ViewModels que conectan la UI con el dominio
+│   ├── view/               # Capa de presentación (Fragments y Activity)
 │   └── MainActivity.kt     # Actividad principal (Host de navegación)
 ├── res/
 │   ├── layout/             # Diseños XML con View Binding
