@@ -1,6 +1,7 @@
-package com.example.nav.model
+package com.example.nav.validation
 
 import android.util.Patterns
+import com.example.nav.model.ValidationResult
 
 class RegisterValidator {
 
@@ -20,7 +21,10 @@ class RegisterValidator {
             value.isEmpty() -> ValidationResult(false, "El correo es obligatorio")
             value.length < 5 -> ValidationResult(false, "Mínimo 5 caracteres")
             value.length > 100 -> ValidationResult(false, "Máximo 100 caracteres")
-            !Patterns.EMAIL_ADDRESS.matcher(value).matches() -> ValidationResult(false, "Formato de correo inválido")
+            !Patterns.EMAIL_ADDRESS.matcher(value).matches() -> ValidationResult(
+                false,
+                "Formato de correo inválido"
+            )
             else -> ValidationResult(true)
         }
     }

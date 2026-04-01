@@ -3,7 +3,7 @@ package com.example.nav.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.nav.model.RegisterUIState
-import com.example.nav.model.RegisterValidator
+import com.example.nav.validation.RegisterValidator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.userProfileChangeRequest
 import kotlinx.coroutines.flow.MutableStateFlow

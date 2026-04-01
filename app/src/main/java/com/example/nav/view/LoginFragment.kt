@@ -22,51 +22,43 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: LoginViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding.registerButton.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        // Verificar si ya hay una sesión activa
-        if (viewModel.isUserLoggedIn()) {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-            return
-        }
 
         setupListeners()
         observeUIState()
     }
 
     private fun setupListeners() {
-        with(binding) {
-            usernameEditText.doAfterTextChanged { text ->
-                viewModel.onUsernameChanged(text?.toString().orEmpty())
-            }
+        binding.usernameEditText.doAfterTextChanged { text ->
+            viewModel.onUsernameChanged(text?.toString().orEmpty())
+        }
 
-            passwordEditText.doAfterTextChanged { text ->
-                viewModel.onPasswordChanged(text?.toString().orEmpty())
-            }
+        binding.passwordEditText.doAfterTextChanged { text ->
+            viewModel.onPasswordChanged(text?.toString().orEmpty())
+        }
 
-            loginButton.setOnClickListener {
-                viewModel.login(
-                    onSuccess = {
-                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                    },
-                    onError = { message ->
-                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-                    }
-                )
-            }
+        binding.loginButton.setOnClickListener {
+            viewModel.login()
+        }
 
-            registerButton.setOnClickListener {
-                findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
-            }
+        binding.registerButton.setOnClickListener {
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
     }
 
@@ -76,12 +68,19 @@ class LoginFragment : Fragment() {
                 viewModel.uiState.collect { state ->
                     binding.usernameTextInputLayout.error = state.usernameError
                     binding.passwordTextInputLayout.error = state.passwordError
-                    
-                    // El botón solo se habilita si el formulario es válido y no hay una petición en curso
                     binding.loginButton.isEnabled = state.isFormValid && !state.isLoading
-
                     binding.loginButton.text =
                         if (state.isLoading) "Iniciando sesión..." else "Iniciar Sesión"
+
+                    state.loginErrorMessage?.let { message ->
+                        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                        viewModel.clearLoginError()
+                    }
+
+                    if (state.isLoginSuccess) {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                        viewModel.clearLoginSuccess()
+                    }
                 }
             }
         }
